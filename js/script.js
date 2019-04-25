@@ -46,11 +46,43 @@ $.ajax({
 });
 
 
+$("#love_meal").click(function () {
+    let love_meal = localStorage.getItem('love_meal');
+    $.ajax({
+        url: `https://www.themealdb.com/api/json/v1/1/search.php?s=${love_meal}`,
+        type: 'GET',
+        dataType: 'json',
+        success: function (p_love_meal) {
+            console.log(p_love_meal['meals'][0]['strMeal']);
+            $("#btn_Coeur").removeClass('red');
+            $("#meal_titre").text(p_love_meal['meals'][0]['strMeal']);
+            $("#ingredients").empty();
+            $("#mesure_ingredients").empty();
+            if (p_love_meal['meals'][0]['strMeal'] == localStorage.getItem('love_meal'))
+            {
+                $("#btn_Coeur").addClass('red');
+            }
 
-
-
-
-
+            let compteur = "1";
+            let strIngredient = "strIngredient1";
+            let strMesure = "strMeasure1";
+            while (p_love_meal['meals'][0][strIngredient] != "") {
+                $("#ingredients").append(`<p>${p_love_meal['meals'][0][strIngredient]}</p>`);
+                $("#mesure_ingredients").append(`<p>${p_love_meal['meals'][0][strMesure]}</p>`);
+                compteur++;
+                strIngredient = "strIngredient";
+                strIngredient += compteur.toString();
+                strMesure = "strMeasure";
+                strMesure += compteur.toString();
+            }
+            $("#meal_image").attr('src',p_love_meal['meals'][0]['strMealThumb']);
+            $("#meal_recette").text(p_love_meal['meals'][0]['strInstructions']);
+            let meal_youtube = p_love_meal['meals'][0]['strYoutube'];
+            meal_youtube = meal_youtube.replace("watch?v=", "embed/");
+            $("#meal_youtube").attr('src',meal_youtube);
+        }
+    });
+ });
 
 
 $("#select_area").change(function () {

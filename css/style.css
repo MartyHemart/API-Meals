@@ -15,6 +15,10 @@
     display: flex;
   }
 
+  #love_meal {
+    margin-left: 50px;
+  }
+
   .align-ingredients{
     display: flex;
     justify-content: space-between;
